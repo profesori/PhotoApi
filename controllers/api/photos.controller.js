@@ -23,7 +23,6 @@ var upload = multer({ dest: 'uploads/' });
 // routes
 router.post('/add', registerPhoto);
 router.get('/current_photo', getCurrentPhoto);
-router.get('/sign_S3',sign_s3);
 
 router.post('/upload_photo', upload.single('image'), function(req, res) {
     console.log(req.file);
