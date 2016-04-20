@@ -1,7 +1,9 @@
 var config = require('config.json');
 var db = require('seraph')({
   server: 'http://localhost:7474',
-  id: 'seraphId'
+  id: 'seraphId',
+  user : 'neo4j',
+  password :'golden'
 });
 var model = require('seraph-model');
 var usersDb = model(db, 'User');
