@@ -3,7 +3,7 @@ var db = require('seraph')({
   server: 'http://localhost:7474',
   id: 'seraphId',
   user : 'neo4j',
-  password :'golden'
+  pass :'golden'
 });
 var model = require('seraph-model');
 var usersDb = model(db, 'User');
