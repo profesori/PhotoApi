@@ -3,7 +3,7 @@ var express = require('express');
 var gcloud = require('gcloud');
 var router = express.Router();
 var photoService = require('services/photo.service');
-var images = require('../lib/images');
+var images = require('../libs/images');
 
 // routes
 router.post(
