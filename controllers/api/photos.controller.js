@@ -46,6 +46,11 @@ router.post(
             res.status(400).send(err);
         });
   }
+);
+
+router.get('/current_photo', getCurrentPhoto);
+
+module.exports = router;
   function getPublicUrl (filename) {
   return 'https://storage.googleapis.com/' + CLOUD_BUCKET + '/' + filename;
 }
@@ -57,7 +62,7 @@ router.post(
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
 
-  stream.on('error', function (err) {
+stream.on('error', function (err) {
     req.file.cloudStorageError = err;
     next(err);
   });
@@ -70,13 +75,6 @@ router.post(
 
   stream.end(req.file.buffer);
 }
-  
-);
-
-router.get('/current_photo', getCurrentPhoto);
-
-module.exports = router;
-
 
 
 function getCurrentPhoto(req, res) {
