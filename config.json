@@ -1,7 +1,7 @@
 ﻿{
     "connectionString": "localhost:27017/NEO4J",
     "apiUrl":  "http://localhost:3000/api",
-    "secret": "REPLACE THIS WITH YOUR OWN SECRET, IT CAN BE ANY STRING"
+    "secret": "REPLACE THIS WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
     "GCLOUD_PROJECT": "conquest-1288",
     "CLOUD_BUCKET": "conquest",
     "DATA_BACKEND": "datastore"
