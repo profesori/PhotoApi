@@ -12,11 +12,12 @@ var multer = require('multer')({
     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
   }
 });
-var CLOUD_BUCKET = config.get('CLOUD_BUCKET');
+var CLOUD_BUCKET = config.CLOUD_BUCKET;
 var storage = gcloud.storage({
-  projectId: config.get('GCLOUD_PROJECT')
+  projectId: config.GCLOUD_PROJECT
 });
 var bucket = storage.bucket(CLOUD_BUCKET);
+
 var winston = require('winston');
   winston.add(winston.transports.File, { filename: 'logger.log' });
   winston.remove(winston.transports.Console);
