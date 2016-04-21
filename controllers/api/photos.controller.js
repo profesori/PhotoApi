@@ -46,13 +46,10 @@ router.post(
             res.status(400).send(err);
         });
   }
-);
-
-router.get('/current_photo', getCurrentPhoto);
-
-module.exports = router;
-
-function sendUploadToGCS (req, res, next) {
+  function getPublicUrl (filename) {
+  return 'https://storage.googleapis.com/' + CLOUD_BUCKET + '/' + filename;
+}
+  function sendUploadToGCS (req, res, next) {
   if (!req.file) {
     return next();
   }
@@ -73,6 +70,14 @@ function sendUploadToGCS (req, res, next) {
 
   stream.end(req.file.buffer);
 }
+  
+);
+
+router.get('/current_photo', getCurrentPhoto);
+
+module.exports = router;
+
+
 
 function getCurrentPhoto(req, res) {
       console.log(req.headers);
