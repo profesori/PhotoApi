@@ -17,6 +17,7 @@ router.post(
     // in cloud storage.
     if (req.file && req.file.cloudStoragePublicUrl) {
       data.imageUrl = req.file.cloudStoragePublicUrl;
+      console.log(data.imageUrl);
     }
 
     // Save the data to the database.
@@ -25,7 +26,7 @@ router.post(
             res.sendStatus(200);
         })
         .catch(function (err) {
-			winston.error(err);
+	
             res.status(400).send(err);
         });
   }
