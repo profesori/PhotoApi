@@ -8,8 +8,8 @@ var images = require('../../libs/images');
 // routes
 router.post(
   '/add',
-  multer.single('image'),
-  sendUploadToGCS,
+  images.multer.single('image'),
+  images.sendUploadToGCS,
   function insert (req, res, next) {
     var data = req.body;
 
