@@ -6,7 +6,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var config = require('config.json');
-var logging = require('./lib/log');
+var logging = require('./libs/log');
 
 // Add the request logger before anything else so that it can
 // accurately log requests.
