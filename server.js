@@ -5,9 +5,13 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var config = require('config.json');
+var logging = require('./lib/log');
 
-
-
+// Add the request logger before anything else so that it can
+// accurately log requests.
+// [START requests]
+app.use(logging.requestLogger);
+// [END requests]
 
 
 // app.set('view engine', 'ejs');
@@ -28,13 +32,24 @@ app.use('/api/challenges', require('./controllers/api/challenge.controller'));
 app.use('/api/etapes', require('./controllers/api/etapes.controller'));
 app.use('/api/photos', require('./controllers/api/photos.controller'));
 
+// Add the error logger after all middleware and routes so that
+// it can log errors from the whole application. Any custom error
+// handlers should go after this.
+// [START errors]
+app.use(logging.errorLogger);
 
+// Basic 404 handler
+app.use(function (req, res) {
+  res.status(404).send('Not Found');
+});
 
-// make '/app' default route
-// app.get('/', function (req, res) {
-//     return res.redirect('/app');
-// });
-
+// Basic error handler
+app.use(function (err, req, res, next) {
+  /* jshint unused:false */
+  // If our routes specified a specific response, then send that. Otherwise,
+  // send a generic message so as not to leak anything.
+  res.status(500).send(err.response || 'Something broke!');
+});
 // start server
 var server = app.listen(3000, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);

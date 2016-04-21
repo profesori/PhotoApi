@@ -3,24 +3,7 @@ var express = require('express');
 var gcloud = require('gcloud');
 var router = express.Router();
 var photoService = require('services/photo.service');
-
-var multer = require('multer')({
-  inMemory: true,
-  fileSize: 5 * 1024 * 1024, // no larger than 5mb
-  rename: function (fieldname, filename) {
-    // generate a unique filename
-    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
-  }
-});
-var CLOUD_BUCKET = config.CLOUD_BUCKET;
-var storage = gcloud.storage({
-  projectId: config.GCLOUD_PROJECT
-});
-var bucket = storage.bucket(CLOUD_BUCKET);
-
-var winston = require('winston');
-  winston.add(winston.transports.File, { filename: 'logger.log' });
-  winston.remove(winston.transports.Console);
+var images = require('../lib/images');
 
 // routes
 router.post(
@@ -51,31 +34,6 @@ router.post(
 router.get('/current_photo', getCurrentPhoto);
 
 module.exports = router;
-  function getPublicUrl (filename) {
-  return 'https://storage.googleapis.com/' + CLOUD_BUCKET + '/' + filename;
-}
-  function sendUploadToGCS (req, res, next) {
-  if (!req.file) {
-    return next();
-  }
-  var gcsname = Date.now() + req.file.originalname;
-  var file = bucket.file(gcsname);
-  var stream = file.createWriteStream();
-
-stream.on('error', function (err) {
-    req.file.cloudStorageError = err;
-    next(err);
-  });
-
-  stream.on('finish', function () {
-    req.file.cloudStorageObject = gcsname;
-    req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-    next();
-  });
-
-  stream.end(req.file.buffer);
-}
-
 
 function getCurrentPhoto(req, res) {
       console.log(req.headers);
