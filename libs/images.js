@@ -27,6 +27,7 @@ var bucket = storage.bucket(CLOUD_BUCKET);
 // object.
 // The object's ACL has to be set to public read.
 function getPublicUrl (filename) {
+  console.log('https://storage.googleapis.com/' + CLOUD_BUCKET + '/' + filename);
   return 'https://storage.googleapis.com/' + CLOUD_BUCKET + '/' + filename;
 }
 
