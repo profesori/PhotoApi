@@ -1,71 +1,42 @@
 var config = require('config.json');
 var express = require('express');
+var gcloud = require('gcloud');
 var router = express.Router();
 var photoService = require('services/photo.service');
-var aws = require('aws-sdk');
-var AWS_ACCESS_KEY = "AKIAIWNGALJRBI5WBDOA";
-var AWS_SECRET_KEY = "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";
-var S3_BUCKET = "rudithoma";
-var multer  = require('multer');
-var fs = require('fs');
+
+var multer = require('multer')({
+  inMemory: true,
+  fileSize: 5 * 1024 * 1024, // no larger than 5mb
+  rename: function (fieldname, filename) {
+    // generate a unique filename
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+  }
+});
+var CLOUD_BUCKET = config.get('CLOUD_BUCKET');
+var storage = gcloud.storage({
+  projectId: config.get('GCLOUD_PROJECT')
+});
+var bucket = storage.bucket(CLOUD_BUCKET);
 var winston = require('winston');
   winston.add(winston.transports.File, { filename: 'logger.log' });
   winston.remove(winston.transports.Console);
 
-
-aws.config.update({
-    signatureVersion: 'v4'
-});
-
-
-//router.use(multer({dest:'./uploads/'}).any());
-var upload = multer({ dest: 'uploads/' });
 // routes
-router.post('/add', registerPhoto);
-router.get('/current_photo', getCurrentPhoto);
+router.post(
+  '/add',
+  multer.single('image'),
+  sendUploadToGCS,
+  function insert (req, res, next) {
+    var data = req.body;
 
-router.post('/upload_photo', upload.single('image'), function(req, res) {
-    console.log(req.file);
-    var files = req.file;
-        var berr = false;
-        var txterr;
-         var fileBuffer = fs.readFileSync(files.destination+files.filename);
-             aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
-            var s3 = new aws.S3();
-            var s3_params = {
-                Bucket: S3_BUCKET,
-                Key:"etapes_photos/"+files.originalname,
-                Body:fileBuffer
-            };
-            s3.putObject(s3_params,function(err, data) {
-                if (err) {
-                    winston.error(err, err.stack); // an error occurred
-                }
-                else{
-                     winston.log(data);
-                     winston.log("Going to delete an existing file");
-                        fs.unlink(files.destination+files.filename, function(err) {
-                           if (err) {
-                               winston.error(err);
-                           }
-                           winston.log("File deleted successfully!");
-                        });
-                }
-            });
+    // Was an image uploaded? If so, we'll use its public URL
+    // in cloud storage.
+    if (req.file && req.file.cloudStoragePublicUrl) {
+      data.imageUrl = req.file.cloudStoragePublicUrl;
+    }
 
-        if (berr) {
-             res.status(400).send(txterr);
-        }else{
-             res.sendStatus(200);
-        }
-});
-
-
-module.exports = router;
-
-
-function registerPhoto(req, res) {
-    photoService.create(req.body)
+    // Save the data to the database.
+     photoService.create(data)
         .then(function () {
             res.sendStatus(200);
         })
@@ -73,6 +44,33 @@ function registerPhoto(req, res) {
 			winston.error(err);
             res.status(400).send(err);
         });
+  }
+);
+
+router.get('/current_photo', getCurrentPhoto);
+
+module.exports = router;
+
+function sendUploadToGCS (req, res, next) {
+  if (!req.file) {
+    return next();
+  }
+  var gcsname = Date.now() + req.file.originalname;
+  var file = bucket.file(gcsname);
+  var stream = file.createWriteStream();
+
+  stream.on('error', function (err) {
+    req.file.cloudStorageError = err;
+    next(err);
+  });
+
+  stream.on('finish', function () {
+    req.file.cloudStorageObject = gcsname;
+    req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+    next();
+  });
+
+  stream.end(req.file.buffer);
 }
 
 function getCurrentPhoto(req, res) {
