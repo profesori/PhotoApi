@@ -9,6 +9,7 @@ var model = require('seraph-model');
 var usersDb = model(db, 'User');
 var etapeDb = model(db,'Etape');
 var photoDb = model(db,'Photo');
+photoDb.useTimestamps('created','updated');
 var _ = require('lodash');
 var Q = require('q');
 var uuid = require('hat');
