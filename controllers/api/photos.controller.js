@@ -31,9 +31,9 @@ router.post(
             userService.getById(req.user.sub)
             .then(function (_user){
              photoService.relate_photo_user(_photo,_user)
-             .then(
-               res.sendStatus(200);
-             )
+             .then(function () {
+                 res.sendStatus(200);
+             });
              .catch(function (err) {
                  res.status(400).send(err);
                });
