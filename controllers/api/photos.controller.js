@@ -14,7 +14,6 @@ router.post(
   function insert (req, res, next) {
     var data = req.body;
     var _photo;
-    var _user;
     // Was an image uploaded? If so, we'll use its public URL
     // in cloud storage.
     if (req.file && req.file.cloudStoragePublicUrl) {
@@ -27,9 +26,11 @@ router.post(
         .then(function (_id) {
           photoServide.getById(_id)
           .then(function(photo){
+            console.log(photo);
             _photo=photo;
             userService.getById(req.user.sub)
             .then(function (_user){
+              console.log(_user);
              photoService.relate_photo_user(_photo,_user)
              .then(function () {
                  res.sendStatus(200);
