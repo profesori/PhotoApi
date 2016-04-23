@@ -48,7 +48,8 @@ router.post(
         .catch(function (err) {
             res.status(400).send(err);
         });
-});
+      });
+  });
 
 router.get('/current_photo', getCurrentPhoto);
 
