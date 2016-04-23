@@ -37,7 +37,7 @@ function create(photoParam) {
     return deferred.promise;
 }
 
-function relate_photo_user(u,ph){
+function relate(u,ph){
   db.relate(u.seraphId,'TOOK_PHOTO',ph.seraphId,'',function(err,relat){
     if (err){
       deferred.reject(err);
