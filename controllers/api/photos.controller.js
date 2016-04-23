@@ -33,7 +33,7 @@ router.post(
              photoService.relate_photo_user(_photo,_user)
              .then(function () {
                  res.sendStatus(200);
-             });
+             })
              .catch(function (err) {
                  res.status(400).send(err);
                });
