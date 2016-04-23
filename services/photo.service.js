@@ -54,7 +54,7 @@ function getById(_id) {
     photoDb.where({id:_id}, function (err, photo) {
         if (err) deferred.reject(err);
 
-        if (etape.length) {
+        if (photo.length) {
             deferred.resolve(photo[0]);
         } else {
             deferred.resolve();
