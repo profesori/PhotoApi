@@ -18,6 +18,7 @@ var service = {};
 
 service.getById = getById;
 service.create = create;
+service.relate = relate;
 module.exports = service;
 
 function create(photoParam) {
@@ -30,14 +31,20 @@ function create(photoParam) {
             photo,
             function (err, doc) {
                 if (err) deferred.reject(err);
-                deferred.resolve();
+                deferred.resolve(photoParam.id);
             });
     }
     return deferred.promise;
 }
 
-function sign_S3() {
-    
+function relate_photo_user(u,ph){
+  db.relate(u.seraphId,'TOOK_PHOTO',ph.seraphId,'',function(err,relat){
+    if (err){
+      deferred.reject(err);
+      console.log(err);
+    }
+      deferred.resolve();
+  });
 }
 
 function getById(_id) {
