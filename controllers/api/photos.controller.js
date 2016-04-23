@@ -26,6 +26,7 @@ router.post(
         .then(function (photo) {
             console.log(photo);
             _photo=photo;
+            console.log(req.user.sub);
             userService.getById(req.user.sub)
             .then(function (_user){
               console.log(_user);
