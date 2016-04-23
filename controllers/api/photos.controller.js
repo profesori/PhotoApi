@@ -23,10 +23,7 @@ router.post(
 
     // Save the data to the database.
      photoService.create(data)
-        .then(function (_id) {
-          console.log(_id);
-          photoServide.getById(_id)
-          .then(function(photo){
+        .then(function (photo) {
             console.log(photo);
             _photo=photo;
             userService.getById(req.user.sub)
@@ -44,14 +41,10 @@ router.post(
                 res.status(400).send(err);
               });
           })
-          .catch(function (err) {
-              res.status(400).send(err);
-            })
         .catch(function (err) {
             res.status(400).send(err);
         });
       });
-  });
 
 router.get('/current_photo', getCurrentPhoto);
 

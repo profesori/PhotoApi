@@ -29,10 +29,10 @@ function create(photoParam) {
         var photo = photoParam;
         photoDb.save(
             photo,
-            function (err, doc) {
+            function (err, pht) {
                 if (err) deferred.reject(err);
                 console.log(doc);
-                deferred.resolve(photoParam.id);
+                deferred.resolve(pht);
             });
     }
     return deferred.promise;
