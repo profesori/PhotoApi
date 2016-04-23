@@ -24,6 +24,7 @@ router.post(
     // Save the data to the database.
      photoService.create(data)
         .then(function (_id) {
+          console.log(_id);
           photoServide.getById(_id)
           .then(function(photo){
             console.log(photo);
