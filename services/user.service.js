@@ -77,7 +77,7 @@ function create(userParam) {
         function (err, user) {
             if (err) deferred.reject(err);
 
-            if (user.length) {
+            if (user) {
                 // username already exists
                 deferred.reject('Username "' + userParam.username + '" est déjà pris');
             } else {
