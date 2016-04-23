@@ -53,7 +53,7 @@ function getById(_id) {
     var deferred = Q.defer();
     photoDb.where({id:_id}, function (err, photo) {
         if (err) deferred.reject(err);
-
+        console.log(photo[0]);
         if (photo.length) {
             deferred.resolve(photo[0]);
         } else {
