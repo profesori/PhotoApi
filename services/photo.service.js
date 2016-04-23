@@ -31,7 +31,7 @@ function create(photoParam) {
             photo,
             function (err, pht) {
                 if (err) deferred.reject(err);
-                console.log(doc);
+                console.log(pht);
                 deferred.resolve(pht);
             });
     }
