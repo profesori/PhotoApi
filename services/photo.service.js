@@ -38,6 +38,7 @@ function create(photoParam) {
 }
 
 function relate(u,ph){
+  var deferred = Q.defer();
   db.relate(u.seraphId,'TOOK_PHOTO',ph.seraphId,'',function(err,relat){
     if (err){
       deferred.reject(err);
@@ -45,6 +46,7 @@ function relate(u,ph){
     }
       deferred.resolve();
   });
+  return deferred.promise;
 }
 
 function getById(_id) {
