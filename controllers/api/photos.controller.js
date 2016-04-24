@@ -12,11 +12,7 @@ router.post(
 //  images.multer.single('image'),
   images.sendUploadToGCS,
   function insert (req, res, next) {
-    var data = {
-      latitude : req.headers.latitude,
-      longitude : req.headers.longitude,
-      direction:req.headers.direction
-    }
+    var data =req.body;
     var _photo;
     // Was an image uploaded? If so, we'll use its public URL
     // in cloud storage.
@@ -25,30 +21,30 @@ router.post(
       console.log(data.imageUrl);
     }
 
-    // // Save the data to the database.
-    //  photoService.create(data)
-    //     .then(function (photo) {
-    //         console.log(photo);
-    //         _photo=photo;
-    //         console.log(req.user.sub);
-    //         userService.getById(req.user.sub)
-    //         .then(function (_user){
-    //           console.log(_user);
-    //          photoService.relate(_photo,_user)
-    //          .then(function () {
-    //              res.sendStatus(200);
-    //          })
-    //          .catch(function (err) {
-    //              res.status(400).send(err);
-    //            });
-    //         })
-    //         .catch(function (err) {
-    //             res.status(400).send(err);
-    //           });
-    //       })
-    //     .catch(function (err) {
-    //         res.status(400).send(err);
-    //     });
+     // Save the data to the database.
+      photoService.create(data)
+         .then(function (photo) {
+             console.log(photo);
+             _photo=photo;
+             console.log(req.user.sub);
+             userService.getById(req.user.sub)
+             .then(function (_user){
+               console.log(_user);
+              photoService.relate(_photo,_user)
+              .then(function () {
+                  res.sendStatus(200);
+              })
+              .catch(function (err) {
+                  res.status(400).send(err);
+                });
+             })
+             .catch(function (err) {
+                 res.status(400).send(err);
+               });
+           })
+         .catch(function (err) {
+             res.status(400).send(err);
+         });
 });
 
 router.get('/current_photo', getCurrentPhoto);
