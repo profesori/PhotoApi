@@ -43,7 +43,7 @@ function sendUploadToGCS (req, res, next) {
   }
 
   //var decodedImage = new Buffer(req.body, 'base64').toString('binary');
-  var gcsname =  req.header.filename;
+  var gcsname = Date.now() + req.file.originalname;
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
 
