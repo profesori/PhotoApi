@@ -36,7 +36,7 @@ function getPublicUrl (filename) {
 // * ``cloudStorageObject`` the object name in cloud storage.
 // * ``cloudStoragePublicUrl`` the public url to the object.
 function sendUploadToGCS (req, res, next) {
-  console.log(req.file);
+  console.log(req.header);
   
   if (!req.header.image) {
     return next();
@@ -48,17 +48,17 @@ function sendUploadToGCS (req, res, next) {
   var stream = file.createWriteStream(decodedImage);
 
   stream.on('error', function (err) {
-    req.file.cloudStorageError = err;
+    req.header.cloudStorageError = err;
     next(err);
   });
 
   stream.on('finish', function () {
-    req.file.cloudStorageObject = gcsname;
-    req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+    req.header.cloudStorageObject = gcsname;
+    req.header.cloudStoragePublicUrl = getPublicUrl(gcsname);
     next();
   });
 
-  stream.end(req.file.buffer);
+  stream.end(req.header.buffer);
 }
 
 // Multer handles parsing multipart/form-data requests.
