@@ -14,10 +14,10 @@ module.exports = router;
 
 function authenticateUser(req, res) {
     userService.authenticate(req.body.username, req.body.password)
-        .then(function (token) {
-            if (token) {
+        .then(function (user) {
+            if (user) {
                 // authentication successful
-                res.send({ token: token });
+                res.send({ user: user });
             } else {
                 // authentication failed
                 res.sendStatus(401);
