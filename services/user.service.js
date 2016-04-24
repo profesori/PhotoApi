@@ -26,8 +26,7 @@ module.exports = service;
 
 function authenticate(username, password) {
     var deferred = Q.defer();
-console.log(username);
-console.log(password);
+
     usersDb.where({ username: username }, function (err, user) {
         if (err) deferred.reject(err);
         console.log(user);
