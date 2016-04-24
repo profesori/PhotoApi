@@ -40,7 +40,7 @@ function authenticate(username, password) {
         //var neopass = res.substring(1,res.length-1)
         if (user.length && bcrypt.compareSync(password, res)) {
             // authentication successful
-              user_final.token = jwt.sign({ sub: user_final[0].id }, config.secret);
+              user_final[0].token = jwt.sign({ sub: user_final[0].id }, config.secret);
             deferred.resolve(user_final);
         } else {
             // authentication failed
