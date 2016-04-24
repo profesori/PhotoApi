@@ -36,25 +36,25 @@ function getPublicUrl (filename) {
 // * ``cloudStorageObject`` the object name in cloud storage.
 // * ``cloudStoragePublicUrl`` the public url to the object.
 function sendUploadToGCS (req, res, next) {
-  console.log(req.header);
+  console.log(req.file);
   
-  if (!req.header.image) {
+  if (!req.file) {
     return next();
   }
 
-  var decodedImage = new Buffer(req.body, 'base64').toString('binary');
+  //var decodedImage = new Buffer(req.body, 'base64').toString('binary');
   var gcsname =  req.header.filename;
   var file = bucket.file(gcsname);
-  var stream = file.createWriteStream(decodedImage);
+  var stream = file.createWriteStream();
 
   stream.on('error', function (err) {
-    req.header.cloudStorageError = err;
+    req.file.cloudStorageError = err;
     next(err);
   });
 
   stream.on('finish', function () {
-    req.header.cloudStorageObject = gcsname;
-    req.header.cloudStoragePublicUrl = getPublicUrl(gcsname);
+    req.file.cloudStorageObject = gcsname;
+    req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
     next();
   });
 
@@ -64,18 +64,18 @@ function sendUploadToGCS (req, res, next) {
 // Multer handles parsing multipart/form-data requests.
 // This instance is configured to store images in memory and re-name to avoid
 // conflicting with existing objects. This makes it straightforward to upload
-// to Cloud Storage.
-// var multer = require('multer')({
-//   inMemory: true,
-//   fileSize: 5 * 1024 * 1024, // no larger than 5mb
-//   rename: function (fieldname, filename) {
-//     // generate a unique filename
-//     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
-//   }
-// });
+ //to Cloud Storage.
+ var multer = require('multer')({
+   inMemory: true,
+   fileSize: 5 * 1024 * 1024, // no larger than 5mb
+   rename: function (fieldname, filename) {
+     // generate a unique filename
+     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+   }
+ });
 
 module.exports = {
   getPublicUrl: getPublicUrl,
   sendUploadToGCS: sendUploadToGCS,
-//  multer: multer
+  multer: multer
 };
