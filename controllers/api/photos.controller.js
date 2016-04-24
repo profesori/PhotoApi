@@ -20,8 +20,8 @@ router.post(
     var _photo;
     // Was an image uploaded? If so, we'll use its public URL
     // in cloud storage.
-    if (req.header && req.header.cloudStoragePublicUrl) {
-      data.imageUrl = req.header.cloudStoragePublicUrl;
+    if (req.file && req.file.cloudStoragePublicUrl) {
+      data.imageUrl = req.file.cloudStoragePublicUrl;
       console.log(data.imageUrl);
     }
 
