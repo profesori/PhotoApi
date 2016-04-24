@@ -36,7 +36,7 @@ function getPublicUrl (filename) {
 // * ``cloudStorageObject`` the object name in cloud storage.
 // * ``cloudStoragePublicUrl`` the public url to the object.
 function sendUploadToGCS (req, res, next) {
-  console.log(req);
+  console.log(req.file);
   
   if (!req.header.image) {
     return next();
