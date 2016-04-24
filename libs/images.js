@@ -36,13 +36,14 @@ function getPublicUrl (filename) {
 // * ``cloudStorageObject`` the object name in cloud storage.
 // * ``cloudStoragePublicUrl`` the public url to the object.
 function sendUploadToGCS (req, res, next) {
-  if (!req.file) {
+  if (!req.header.image) {
     return next();
   }
 
-  var gcsname = Date.now() + req.file.originalname;
+  var decodedImage = new Buffer(req.body, 'base64').toString('binary');
+  var gcsname =  req.header.filename;
   var file = bucket.file(gcsname);
-  var stream = file.createWriteStream();
+  var stream = file.createWriteStream(decodedImage);
 
   stream.on('error', function (err) {
     req.file.cloudStorageError = err;
@@ -62,17 +63,17 @@ function sendUploadToGCS (req, res, next) {
 // This instance is configured to store images in memory and re-name to avoid
 // conflicting with existing objects. This makes it straightforward to upload
 // to Cloud Storage.
-var multer = require('multer')({
-  inMemory: true,
-  fileSize: 5 * 1024 * 1024, // no larger than 5mb
-  rename: function (fieldname, filename) {
-    // generate a unique filename
-    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
-  }
-});
+// var multer = require('multer')({
+//   inMemory: true,
+//   fileSize: 5 * 1024 * 1024, // no larger than 5mb
+//   rename: function (fieldname, filename) {
+//     // generate a unique filename
+//     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+//   }
+// });
 
 module.exports = {
   getPublicUrl: getPublicUrl,
   sendUploadToGCS: sendUploadToGCS,
-  multer: multer
+//  multer: multer
 };

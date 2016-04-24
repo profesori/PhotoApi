@@ -9,10 +9,14 @@ var images = require('../../libs/images');
 // routes
 router.post(
   '/add',
-  images.multer.single('image'),
+//  images.multer.single('image'),
   images.sendUploadToGCS,
   function insert (req, res, next) {
-    var data = req.body;
+    var data = {
+      latitude : req.headers.latitude,
+      longitude : req.headers.longitude,
+      direction:req.headers.direction      
+    }
     var _photo;
     // Was an image uploaded? If so, we'll use its public URL
     // in cloud storage.
