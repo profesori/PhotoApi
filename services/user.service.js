@@ -99,7 +99,7 @@ function create(userParam) {
             function (err, doc) {
                 if (err) deferred.reject(err);
 
-                deferred.resolve();
+                deferred.resolve(doc);
             });
     }
 
