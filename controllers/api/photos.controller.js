@@ -30,7 +30,7 @@ router.post(
              userService.getById(req.user.sub)
              .then(function (_user){
                console.log(_user);
-              photoService.relate(_photo,_user)
+              photoService.relate(_user,photo)
               .then(function () {
                   res.sendStatus(200);
               })
