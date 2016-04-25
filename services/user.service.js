@@ -44,7 +44,7 @@ function authenticate(username, password) {
             deferred.resolve(user_final);
         } else {
             // authentication failed
-            deferred.resolve();
+            deferred.resolve('authentication failed');
         }
     });
 
@@ -96,10 +96,17 @@ function create(userParam) {
         var user = userParam;
         usersDb.save(
             user,
-            function (err, doc) {
+            function (err, user) {
                 if (err) deferred.reject(err);
-
-                deferred.resolve(doc);
+                 if (user.length) {
+                   var user_str = JSON.stringify(user);
+                    var user_final = JSON.parse(user_str);
+                    user_final[0].token = jwt.sign({ sub: user_final[0].id }, config.secret);
+                    deferred.resolve(user_final);
+                  }else{
+                    deferred.reject('Register failed');
+                  }
+                
             });
     }
 
