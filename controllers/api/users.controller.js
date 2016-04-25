@@ -30,8 +30,8 @@ function authenticateUser(req, res) {
 
 function registerUser(req, res) {
     userService.create(req.body)
-        .then(function () {
-            res.sendStatus(200);
+        .then(function (user) {
+            res.sendStatus(user);
         })
         .catch(function (err) {
             res.status(400).send(err);
