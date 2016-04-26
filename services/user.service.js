@@ -101,9 +101,9 @@ function create(userParam) {
                  
                    var user_str = JSON.stringify(user);
                     var user_final = JSON.parse(user_str);
-                    console.log(user);
-                    user.token = jwt.sign({ sub: user.id }, config.secret);
-                    deferred.resolve(user);
+                    console.log(user_final);
+                    user_final[0].token = jwt.sign({ sub: user.id }, config.secret);
+                    deferred.resolve(user_final);
             });
     }
 
