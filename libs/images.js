@@ -67,7 +67,7 @@ function sendUploadToGCS (req, res, next) {
  //to Cloud Storage.
  var multer = require('multer')({
    inMemory: true,
-   fileSize: 5 * 1024 * 1024, // no larger than 5mb
+   fileSize: 10 * 1024 * 1024, // no larger than 5mb
    rename: function (fieldname, filename) {
      // generate a unique filename
      return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
