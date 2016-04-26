@@ -70,7 +70,7 @@ function sendUploadToGCS (req, res, next) {
    fileSize: 5 * 1024 * 1024, // no larger than 5mb
    rename: function (fieldname, filename) {
      // generate a unique filename
-     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+     return filename.toLowerCase() + Date.now();
    }
  });
 
