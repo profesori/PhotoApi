@@ -98,9 +98,10 @@ function create(userParam) {
             user,
             function (err, user) {
                 if (err) deferred.reject(err);
-                 console.log(user);
+                 
                    var user_str = JSON.stringify(user);
                     var user_final = JSON.parse(user_str);
+                    console.log(user);
                     user.token = jwt.sign({ sub: user.id }, config.secret);
                     deferred.resolve(user);
             });
