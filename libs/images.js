@@ -56,7 +56,7 @@ function sendUploadToGCS (req, res, next) {
     req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
     next();
   });
-  stream.end(req.header.buffer);
+//  stream.end(req.header.buffer);
  /* localReadStream.on('error', function (err) {
     req.file.cloudStorageError = err;
     next(err);
