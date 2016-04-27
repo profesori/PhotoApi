@@ -47,6 +47,7 @@ function sendUploadToGCS (req, res, next) {
   var localReadStream = fs.createReadStream(req.file.path);
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
+  
   localReadStream.pipe(stream);
   localReadStream.on('error', function (err) {
     req.file.cloudStorageError = err;
@@ -59,7 +60,7 @@ function sendUploadToGCS (req, res, next) {
     next();
   });
 
-  localReadStream.end(req.header.buffer);
+  stream.end(req.header.buffer);
 }
 
 // Multer handles parsing multipart/form-data requests.
