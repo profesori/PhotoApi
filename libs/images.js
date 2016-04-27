@@ -44,13 +44,14 @@ function sendUploadToGCS (req, res, next) {
 
   //var decodedImage = new Buffer(req.body, 'base64').toString('binary');
   var gcsname = Date.now() + req.file.originalname;
-  var localReadStream = fs.createReadStream(req.file.path);
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
-  
-  localReadStream.pipe(stream,{end:false});
-  stream.end(req.header.buffer)
-  
+  fs.createReadStream(req.file.path)
+  .pipe(stream)
+  .on('error', function(err) {})
+  .on('finish', function() {
+    return req.header.buffer;
+  });
  /* localReadStream.on('error', function (err) {
     req.file.cloudStorageError = err;
     next(err);
