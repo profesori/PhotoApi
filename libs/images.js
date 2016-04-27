@@ -37,7 +37,7 @@ function getPublicUrl (filename) {
 // * ``cloudStoragePublicUrl`` the public url to the object.
 function sendUploadToGCS (req, res, next) {
   console.log(req.file);
-  
+
   if (!req.file) {
     return next();
   }
@@ -48,10 +48,15 @@ function sendUploadToGCS (req, res, next) {
   var stream = file.createWriteStream();
   fs.createReadStream(req.file.path)
   .pipe(stream)
-  .on('error', function(err) {})
+  .on('error', function(err) {
+    req.file.cloudStorageError = err;
+    next(err);})
   .on('finish', function() {
-    return req.header.buffer;
+    req.file.cloudStorageObject = gcsname;
+    req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+    next();
   });
+  stream.end(req.header.buffer);
  /* localReadStream.on('error', function (err) {
     req.file.cloudStorageError = err;
     next(err);
