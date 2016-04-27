@@ -44,7 +44,7 @@ function sendUploadToGCS (req, res, next) {
 
   //var decodedImage = new Buffer(req.body, 'base64').toString('binary');
   var gcsname = Date.now() + req.file.originalname;
-  var localReadStream = fs.createReadStream(req.path);
+  var localReadStream = fs.createReadStream(req.file.path);
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
   localReadStream.pipe(stream);
