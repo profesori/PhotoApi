@@ -15,7 +15,7 @@
 
 var gcloud = require('gcloud');
 var config = require('../config');
-
+var fs = require('fs');
 var CLOUD_BUCKET = config.CLOUD_BUCKET;
 var storage = gcloud.storage({
   projectId: config.GCLOUD_PROJECT
@@ -44,21 +44,22 @@ function sendUploadToGCS (req, res, next) {
 
   //var decodedImage = new Buffer(req.body, 'base64').toString('binary');
   var gcsname = Date.now() + req.file.originalname;
+  var localReadStream = fs.createReadStream(req.path);
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
-
-  stream.on('error', function (err) {
+  localReadStream.pipe(stream);
+  localReadStream.on('error', function (err) {
     req.file.cloudStorageError = err;
     next(err);
   });
 
-  stream.on('finish', function () {
+  localReadStream.on('finish', function () {
     req.file.cloudStorageObject = gcsname;
     req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
     next();
   });
 
-  stream.end(req.header.buffer);
+  localReadStream.end(req.header.buffer);
 }
 
 // Multer handles parsing multipart/form-data requests.
