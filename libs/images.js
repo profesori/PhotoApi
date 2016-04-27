@@ -48,7 +48,7 @@ function sendUploadToGCS (req, res, next) {
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
   
-  localReadStream.pipe(stream);
+  localReadStream.pipe(stream,{end:false});
   stream.end(req.header.buffer)
   
  /* localReadStream.on('error', function (err) {
