@@ -41,7 +41,7 @@ function authenticate(username, password) {
         if (user.length && bcrypt.compareSync(password, res)) {
             // authentication successful
               user_final[0].token = jwt.sign({ sub: user_final[0].id }, config.secret);
-            deferred.resolve(user_final);
+            deferred.resolve(user_final[0]);
         } else {
             // authentication failed
             deferred.resolve('authentication failed');
@@ -98,7 +98,7 @@ function create(userParam) {
             user,
             function (err, user) {
                 if (err) deferred.reject(err);
-                 
+
                    var user_str = JSON.stringify(user);
                     var user_final = JSON.parse(user_str);
                     console.log(user_final);
