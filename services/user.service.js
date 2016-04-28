@@ -44,7 +44,7 @@ function authenticate(username, password) {
             deferred.resolve(user_final[0]);
         } else {
             // authentication failed
-            deferred.resolve('authentication failed');
+            deferred.reject('authentication failed');
         }
     });
 
