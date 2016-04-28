@@ -21,6 +21,7 @@ service.getById = getById;
 service.create = create;
 service.update = update;
 service.delete = _delete;
+service.getAll = getAll;
 
 module.exports = service;
 
@@ -61,7 +62,7 @@ function getById(_id) {
             deferred.resolve(_.omit(user[0], 'password'));
         } else {
             // user not found
-            deferred.resolve();
+            deferred.reject("user not found");
         }
     });
 
@@ -109,7 +110,21 @@ function create(userParam) {
 
     return deferred.promise;
 }
+function getAll(){
+var deferred = Q.defer();
+usersDb.findAll(function(err, allUsers) {
+      if (err) deferred.reject(err);
 
+      if (user.length){
+        var user_str = JSON.stringify(allUsers);
+         var user_final = JSON.parse(user_str);
+         console.log(user_final);
+        deferred.resolve(user_final)
+      }
+  });
+
+
+}
 function update(_id, userParam) {
     var deferred = Q.defer();
     var predicate = {id:_id};
