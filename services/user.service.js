@@ -122,7 +122,7 @@ usersDb.findAll(function(err, allUsers) {
         deferred.resolve(user_final)
       }
   });
-
+return deferred.promise;
 
 }
 function update(_id, userParam) {
