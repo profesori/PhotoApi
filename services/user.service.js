@@ -115,7 +115,7 @@ var deferred = Q.defer();
 usersDb.findAll(function(err, allUsers) {
       if (err) deferred.reject(err);
 
-      if (user.length){
+      if (allUsers.length){
         var user_str = JSON.stringify(allUsers);
          var user_final = JSON.parse(user_str);
          console.log(user_final);
