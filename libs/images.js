@@ -43,7 +43,7 @@ function sendUploadToGCS (req, res, next) {
   }
 
   //var decodedImage = new Buffer(req.body, 'base64').toString('binary');
-  var gcsname = Date.now() + req.file.originalname;
+  var gcsname =  req.file.originalname;
   var file = bucket.file(gcsname);
   var stream = file.createWriteStream();
   fs.createReadStream(req.file.path)
@@ -81,7 +81,7 @@ function sendUploadToGCS (req, res, next) {
    fileSize: 5 * 1024 * 1024, // no larger than 5mb
    rename: function (fieldname, filename) {
      // generate a unique filename
-     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+     return filename.toLowerCase() +'_'+ Date.now();
    }
  });
 
