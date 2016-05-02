@@ -32,8 +32,8 @@ router.post(
              .then(function (_user){
                console.log(_user);
               photoService.relate(_user,photo)
-              .then(function () {
-                  res.sendStatus(200);
+              .then(function (pht) {
+                  res.sendStatus(pht);
               })
               .catch(function (err) {
                   res.status(400).send(err);
