@@ -36,7 +36,7 @@ function create(challengeParam) {
 
           // set user object to userParam without the cleartext password
         var challenge = challengeParam;
-        console.console.log(challenge);
+        console.log(challenge);
         challengeDb.save(
             challenge,
             function (err, challenge) {
