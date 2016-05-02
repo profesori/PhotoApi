@@ -26,6 +26,7 @@ function create(photoParam) {
     createPhoto();
     function createPhoto() {
         photoParam.id = uuid();
+        photoParam.bsend = 1;
         var photo = photoParam;
         photoDb.save(
             photo,
