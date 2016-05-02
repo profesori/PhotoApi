@@ -8,6 +8,7 @@ var db = require('seraph')({
 var model = require('seraph-model');
 var usersDb = model(db, 'User');
 var challengeDb = model(db, 'Challenge');
+var photosDb = model(db,'Photos');
 var _ = require('lodash');
 var Q = require('q');
 var uuid = require('hat');
