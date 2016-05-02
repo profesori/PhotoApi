@@ -38,7 +38,7 @@ function create(challengeParam) {
         console.log(challenge);
         challengeDb.save(
             challenge,
-            function (err, doc) {
+            function (err, challenge) {
                 if (err) deferred.reject(err);
                 deferred.resolve(challenge);
             });
