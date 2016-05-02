@@ -18,8 +18,8 @@ module.exports = router;
 
 function registerChallenge(req, res) {
     challengeService.create(req.body)
-        .then(function () {
-            res.sendStatus(200);
+        .then(function (ch) {
+            res.status(200).send(ch[0]);
         })
         .catch(function (err) {
             res.status(400).send(err);
