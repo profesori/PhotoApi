@@ -29,13 +29,16 @@ function create(challengeParam) {
     createChallenge();
     function createChallenge() {
         challengeParam.id = uuid();
+          console.log(challengeParam);
+          challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
+
           // set user object to userParam without the cleartext password
         var challenge = challengeParam;
         challengeDb.save(
             challenge,
             function (err, doc) {
                 if (err) deferred.reject(err);
-                deferred.resolve();
+                deferred.resolve(challenge);
             });
     }
     return deferred.promise;
