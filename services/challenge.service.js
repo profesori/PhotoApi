@@ -29,12 +29,12 @@ function create(challengeParam) {
     var deferred = Q.defer();
     createChallenge();
     function createChallenge() {
-        challengeParam.Challenge.id = uuid();
+        challengeParam.id= uuid();
           console.log(challengeParam);
           challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
 
           // set user object to userParam without the cleartext password
-        var challenge = challengeParam.Challenge;
+        var challenge = challengeParam;
         challengeDb.save(
             challenge,
             function (err, doc) {
