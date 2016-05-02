@@ -17,7 +17,7 @@ router.post('/participate/:id_user/:id_challenge', participate);
 module.exports = router;
 
 function registerChallenge(req, res) {
-    challengeService.create(req.body)
+    challengeService.create(req.body.Challenge)
         .then(function (ch) {
             res.status(200).send(ch[0]);
         })
