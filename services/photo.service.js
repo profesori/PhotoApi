@@ -45,7 +45,7 @@ function relate(u,ph){
       deferred.reject(err);
       console.log(err);
     }
-      deferred.resolve(ph);
+      deferred.resolve();
   });
   return deferred.promise;
 }
