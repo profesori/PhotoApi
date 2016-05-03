@@ -62,8 +62,8 @@ function getById(_id) {
 
 function list_challenges() {
     var deferred = Q.defer();
-    challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
-    challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
+    //challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
+    //challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
     challengeDb.findAll({orderBy:'start_date'},function (err,challenges){
         if (err){
           deferred.reject(err);
