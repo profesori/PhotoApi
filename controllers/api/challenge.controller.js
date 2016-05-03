@@ -6,6 +6,7 @@ var challengeService = require('services/challenge.service');
 // routes
 router.post('/save', registerChallenge);
 router.get('/list',getAll);
+router.post('/update',update);
 // router.get('/update_challenge/:_id', updateChallenge);
 // router.get('/delete_challenge/:_id', deleteChallenge);
 // router.get('/list_challenge_new', listNewChallenge);
@@ -23,6 +24,18 @@ function registerChallenge(req, res) {
             res.status(400).send(err);
         });
 }
+
+function update(req,res){
+challengeService.update(req.body)
+.then(function (ch) {
+    res.status(200).send(ch);
+})
+.catch(function (err) {
+    res.status(400).send(err);
+});
+}
+
+
 function getAll(req,res){
   challengeService.list()
   .then(function(ch){
@@ -31,25 +44,6 @@ function getAll(req,res){
   .catch(function (err) {
       res.status(400).send(err);
   });
-
-
-}
-
-
-function getCurrentChallenge(req, res) {
-      console.log(req.headers);
-    challengeService.getById(req.headers.id)
-
-        .then(function (challenge) {
-            if (challenge) {
-                res.send(challenge);
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(function (err) {
-            res.status(400).send(err);
-        });
 }
 
 function participate(req,res){

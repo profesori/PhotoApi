@@ -7,7 +7,6 @@ var db = require('seraph')({
 });
 var model = require('seraph-model');
 var usersDb = model(db, 'User');
-var etapeDb = model(db,'Etape');
 var photoDb = model(db,'Photo');
 photoDb.useTimestamps('created','updated');
 var _ = require('lodash');
@@ -16,9 +15,10 @@ var uuid = require('hat');
 
 var service = {};
 
-service.getById = getById;
 service.create = create;
-service.relate = relate;
+service.relate_user_photo = relate_user_photo;
+service.add_photo_challenge = add_photo_challenge;
+service.getAllPhotoOfChallenge=getAllPhotoOfChallenge;
 module.exports = service;
 
 function create(photoParam) {
@@ -39,29 +39,38 @@ function create(photoParam) {
     return deferred.promise;
 }
 
-function relate(u,ph){
+function add_photo_challenge(p,ch){
   var deferred = Q.defer();
-  db.relate(u.seraphId,'TOOK_PHOTO',ph.seraphId,'',function(err,relat){
+  db.relate(ch,'HAS_PHOTO',p,'',function(err,relat){
     if (err){
       deferred.reject(err);
-      console.log(err);
     }
       deferred.resolve();
   });
   return deferred.promise;
 }
 
-function getById(_id) {
-    var deferred = Q.defer();
-    photoDb.where({id:_id}, function (err, photo) {
-        if (err) deferred.reject(err);
-        console.log(photo[0]);
-        if (photo.length) {
-            deferred.resolve(photo[0]);
-        } else {
-            deferred.resolve();
-        }
-    });
+function relate_user_photo(u,ph){
+  var deferred = Q.defer();
+  db.relate(u.seraphId,'TOOK_PHOTO',ph.seraphId,'',function(err,relat){
+    if (err){
+      deferred.reject(err);
 
-    return deferred.promise;
+    }
+      deferred.resolve();
+  });
+  return deferred.promise;
+}
+
+function getAllPhotoOfChallenge(idchallenge){
+  var deferred = Q.defer();
+  var query = "MATCH (x:Challenge {id:{id}})-[HAS_PHOTO]->(p:Photo)"
+            + "return p"
+  db.query(query,{id:idchallenge},function(err,result){
+     if (err) deferred.reject(err);
+
+       deferred.resolve(result);
+  });
+
+  return deferred.promise;
 }

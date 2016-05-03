@@ -17,7 +17,6 @@ var uuid = require('hat');
 var userService = require('services/user.service');
 var service = {};
 
-service.getById = getById;
 service.create = create;
 service.list = list_challenges;
 service.userParticipate=userParticipate;
@@ -44,22 +43,6 @@ function create(challengeParam) {
     return deferred.promise;
 }
 
-function getById(_id) {
-    var deferred = Q.defer();
-    challengeDb.where({id:_id}, function (err, challenge) {
-        if (err) deferred.reject(err);
-
-        if (challenge.length) {
-            deferred.resolve(challenge[0]);
-        } else {
-            deferred.resolve();
-        }
-    });
-    return deferred.promise;
-}
-
-
-
 function list_challenges() {
     var deferred = Q.defer();
     challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
@@ -78,6 +61,18 @@ function list_challenges() {
         }
     });
     return deferred.promise;
+}
+
+function update(challengeParam){
+  var deferred = Q.defer();
+  challengeDb.save(
+      challenge,
+      {excludeCompositions:true},
+      function (err, challenge) {
+          if (err) deferred.reject(err);
+          deferred.resolve(challenge);
+      });
+  return deferred.promise;
 }
 
 function userParticipate(_iduser,_idchallenge){

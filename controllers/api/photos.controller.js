@@ -19,21 +19,18 @@ router.post(
     console.log(req.file)
     if (req.file && req.file.cloudStoragePublicUrl) {
       data.imageUrl = req.file.cloudStoragePublicUrl;
-      console.log(data.imageUrl);
     }
 
      // Save the data to the database.
       photoService.create(data)
          .then(function (photo) {
-             console.log(photo);
              _photo=photo;
-             console.log(req.user.sub);
              userService.getById(req.user.sub)
              .then(function (_user){
-               console.log(_user);
-              photoService.relate(_user,photo)
+              photoService.relate_user_photo(_user,photo)
               .then(function (pht) {
                   res.status(200).send(_photo);
+                  console.console.log(_photo);
               })
               .catch(function (err) {
                   res.status(400).send(err);
@@ -47,25 +44,28 @@ router.post(
              res.status(400).send(err);
          });
 });
-
-router.get('/current_photo', getCurrentPhoto);
-
+router.post('/relateChallengePhoto/:idChallenge/:idPhoto',relateChallengePhoto)
+router.post('/getAllPhotoOfChallenge/:idChallenge',getAllPhotoOfChallenge)
 module.exports = router;
 
-function getCurrentPhoto(req, res) {
-      console.log(req.headers);
-    photoService.getById(req.headers.id)
+function relateChallengePhoto(req,res){
+  photoService.add_photo_challenge(req.headers.idChallenge,req.headers.idPhoto)
+  .then(function(){
+    res.sendStatus(200);
+    console.console.log(_photo);
+  });
+  .catch(function (err) {
+      res.status(400).send(err);
+  });
+}
 
-        .then(function (photo) {
-            if (photo) {
-                res.send(photo);
-            } else {
-				winston.error(err);
-                res.sendStatus(404);
-            }
-        })
-        .catch(function (err) {
-			winston.error(err);
-            res.status(400).send(err);
-        });
+function getAllPhotoOfChallenge(req,res){
+  photoService.getAllPhotoOfChallenge(req.headers.idChallenge)
+  .then(function(result){
+    res.status(200).send(result);
+
+  });
+  .catch(function (err) {
+      res.status(400).send(err);
+  });
 }
