@@ -65,8 +65,8 @@ function list_challenges() {
     //challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
     //challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
     var opt = {
-      varname:'ch'
-      orderBy:'ch.start_date DESC',
+      varname:'ch',
+      orderBy:'ch.start_date DESC'
     }
     challengeDb.findAll({},function (err,challenges){
         if (err){
