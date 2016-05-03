@@ -73,6 +73,7 @@ function list_challenges() {
 
         }
     });
+    return deferred.promise;
 }
 
 function userParticipate(_iduser,_idchallenge){

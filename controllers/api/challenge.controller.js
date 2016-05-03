@@ -24,7 +24,7 @@ function registerChallenge(req, res) {
         });
 }
 function getAll(req,res){
-  challengeService.list_challenges()
+  challengeService.list()
   .then(function(ch){
     res.status(200).send(ch);
   })
