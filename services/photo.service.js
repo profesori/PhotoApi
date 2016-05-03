@@ -65,7 +65,7 @@ function getAllPhotos(){
   var deferred = Q.defer();
   var query = "MATCH (p:Photo)"
             + " OPTIONAL MATCH (x:Challenge)-[r:HAS_PHOTO]->(p)"
-            + " WHERE NOT ()-[:TOOK_PHOTO]->(p)"
+            + " WHERE NOT ()-[:HAS_PHOTO_PROFILE]->(p)"
             + " return p,r,x"
   db.query(query,"",function(err,result){
      if (err) deferred.reject(err);
