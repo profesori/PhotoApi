@@ -68,7 +68,7 @@ function list_challenges() {
       varname:'ch',
       orderBy:'ch.start_date DESC'
     }
-    challengeDb.findAll({},function (err,challenges){
+    challengeDb.findAll(opt,function (err,challenges){
         if (err){
           deferred.reject(err);
         }
