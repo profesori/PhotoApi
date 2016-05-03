@@ -60,7 +60,9 @@ function relateChallengePhoto(req,res){
 }
 
 function getAllPhotoOfChallenge(req,res){
+  console.log(req.headers.idChallenge);
   photoService.getAllPhotoOfChallenge(req.headers.idChallenge)
+
   .then(function(result){
     res.status(200).send(result);
   })
