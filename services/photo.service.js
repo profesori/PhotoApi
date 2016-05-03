@@ -18,7 +18,7 @@ var service = {};
 service.create = create;
 service.relate_user_photo = relate_user_photo;
 service.add_photo_challenge = add_photo_challenge;
-service.getAllPhotoOfChallenge=getAllPhotoOfChallenge;
+service.getAllPhotos=getAllPhotos;
 module.exports = service;
 
 function create(photoParam) {
@@ -61,12 +61,13 @@ function relate_user_photo(u,ph){
   });
   return deferred.promise;
 }
-
-function getAllPhotoOfChallenge(idchallenge){
+function getAllPhotos(){
   var deferred = Q.defer();
-  var query = "MATCH (x:Challenge {id:{id}})-[HAS_PHOTO]->(p:Photo)"
-            + "return p"
-  db.query(query,{id:idchallenge},function(err,result){
+  var query = "MATCH (p:Photo)"
+            + "OPTIONAL MATCH (x:Challenge)-[r:HAS_PHOTO]->(p)"
+            + "WHERE NOT (u:User)-[:HAS_PHOTO]->(p)"
+            + "return p,r,x"
+  db.query(query,"",function(err,result){
      if (err) deferred.reject(err);
 
        deferred.resolve(result);

@@ -45,7 +45,7 @@ router.post(
          });
 });
 router.post('/relateChallengePhoto/:idChallenge/:idPhoto',relateChallengePhoto)
-router.post('/getAllPhotoOfChallenge/:idChallenge',getAllPhotoOfChallenge)
+router.post('/getAllPhotos',getAllPhotos)
 module.exports = router;
 
 function relateChallengePhoto(req,res){
@@ -59,10 +59,8 @@ function relateChallengePhoto(req,res){
   });
 }
 
-function getAllPhotoOfChallenge(req,res){
-  console.log(req.headers.idChallenge);
-  photoService.getAllPhotoOfChallenge(req.headers.idChallenge)
-
+function getAllPhotos(req,res){
+  photoService.getAllPhotoOfChallenge()
   .then(function(result){
     res.status(200).send(result);
   })
