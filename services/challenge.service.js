@@ -10,6 +10,7 @@ var usersDb = model(db, 'User');
 var challengeDb = model(db, 'Challenge');
 var photosDb = model(db,'Photo');
 photosDb.useTimestamps('created','updated');
+challengeDb.useTimestamps('created','updated');
 var _ = require('lodash');
 var Q = require('q');
 var uuid = require('hat');
@@ -18,11 +19,7 @@ var service = {};
 
 service.getById = getById;
 service.create = create;
-// service.update = update;
-// service.delete_challenge = delete_challenge;
-// service.list_new = list_new;
-// service.list_old = list_old;
-
+service.list = list_challenges;
 service.userParticipate=userParticipate;
 module.exports = service;
 
@@ -34,7 +31,6 @@ function create(challengeParam) {
           challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
           var photos  = JSON.parse(challengeParam.tabphotos) ;
           challengeParam.tabphotos = photos;
-
           // set user object to userParam without the cleartext password
         var challenge = challengeParam;
         console.log(challenge);
@@ -59,38 +55,24 @@ function getById(_id) {
             deferred.resolve();
         }
     });
-
     return deferred.promise;
 }
 
-function update(_id,challengeParam) {
-    var deferred  = Q.deferred();
-    var set = {
-      title:challengeParam.title,
-      subtitle : challengeParam.subtitle,
-      date1 : challengeParam.date1,
-      date2 : challengeParam.date2
-    };
-    getById(_id).then(function (challenge){
-      if (challenge) {
-          challengeDb.save(
-            { id: _id },
-            { $set: set },
-            function (err, doc) {
-                if (err) deferred.reject(err);
 
-                deferred.resolve();
-            });
-      }
 
-    }
-    );
-    return deferred.promise;
-}
-
-function list_new(_iduser) {
+function list_challenges() {
     var deferred = Q.defer();
+    challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
+    challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
+    challengeDb.findAll({orderBy:'start_date'},function (err,challenges){
+        if (err){
+          deferred.reject(err);
+        }
+        if (challenges){
+          deferred.resolve(challenges);
 
+        }
+    });
 }
 
 function userParticipate(_iduser,_idchallenge){

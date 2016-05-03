@@ -4,15 +4,13 @@ var router = express.Router();
 var challengeService = require('services/challenge.service');
 
 // routes
-router.post('/add', registerChallenge);
-router.get('/current_challenge', getCurrentChallenge);
+router.post('/save', registerChallenge);
+router.get('/list',getAll);
 // router.get('/update_challenge/:_id', updateChallenge);
 // router.get('/delete_challenge/:_id', deleteChallenge);
 // router.get('/list_challenge_new', listNewChallenge);
 
 router.post('/participate/:id_user/:id_challenge', participate);
-
-
 
 module.exports = router;
 
@@ -25,6 +23,18 @@ function registerChallenge(req, res) {
             res.status(400).send(err);
         });
 }
+function getAll(req,res){
+  challengeService.list()
+  .then(function(ch){
+    res.status(200).send(ch);
+  })
+  .catch(function (err) {
+      res.status(400).send(err);
+  });
+
+
+}
+
 
 function getCurrentChallenge(req, res) {
       console.log(req.headers);
