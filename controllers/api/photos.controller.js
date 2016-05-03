@@ -53,7 +53,7 @@ function relateChallengePhoto(req,res){
   .then(function(){
     res.sendStatus(200);
     console.console.log(_photo);
-  });
+  })
   .catch(function (err) {
       res.status(400).send(err);
   });
@@ -63,8 +63,7 @@ function getAllPhotoOfChallenge(req,res){
   photoService.getAllPhotoOfChallenge(req.headers.idChallenge)
   .then(function(result){
     res.status(200).send(result);
-
-  });
+  })
   .catch(function (err) {
       res.status(400).send(err);
   });
