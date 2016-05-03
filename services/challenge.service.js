@@ -63,7 +63,7 @@ function getById(_id) {
 function list_challenges() {
     var deferred = Q.defer();
     challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
-    //challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
+    challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
     var opt = {
       varName:'ch',
       orderBy:'ch.start_date DESC'
