@@ -64,9 +64,9 @@ function relate_user_photo(u,ph){
 function getAllPhotos(){
   var deferred = Q.defer();
   var query = "MATCH (p:Photo)"
-            + "OPTIONAL MATCH (x:Challenge)-[r:HAS_PHOTO]->(p)"
-            + "WHERE NOT (u:User)-[:HAS_PHOTO]->(p)"
-            + "return p,r,x"
+            + " OPTIONAL MATCH (x:Challenge)-[r:HAS_PHOTO]->(p)"
+            + " WHERE NOT (u:User)-[:HAS_PHOTO]->(p)"
+            + " return p,r,x"
   db.query(query,"",function(err,result){
      if (err) deferred.reject(err);
 
