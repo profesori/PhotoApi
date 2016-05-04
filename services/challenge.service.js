@@ -45,17 +45,14 @@ function create(challengeParam) {
 
 function list_challenges() {
     var deferred = Q.defer();
-    //challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
-    //challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
+    challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
+    challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
     var query = "MATCH (ch:Challenge) "
     var opt = {
       varName:'ch',
-      orderBy:'ch.start_date DESC',
-      include : [
-        usersDb,photosDb
-      ]
+      orderBy:'ch.start_date DESC'
     }
-    challengeDb.query(query,opt,function (err,challenges){
+    challengeDb.findAll(opt,function (err,challenges){
         if (err){
           deferred.reject(err);
         }
