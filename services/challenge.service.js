@@ -54,7 +54,7 @@ function list_challenges() {
       varName:'ch',
       orderBy:'ch.start_date DESC'
     }
-    challengeDb.query(query,opt,function (err,challenges){
+    db.query(query,opt,function (err,challenges){
         if (err){
           deferred.reject(err);
         }
