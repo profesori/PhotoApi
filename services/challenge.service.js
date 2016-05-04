@@ -46,7 +46,6 @@ function create(challengeParam) {
 function list_challenges() {
     var deferred = Q.defer();
     challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
-    usersDb.compose(challengeDb,'tabusers','PARTICIPATE');
     var query = "MATCH (ch:Challenge) "
     var opt = {
       varName:'ch',
@@ -57,7 +56,10 @@ function list_challenges() {
           deferred.reject(err);
         }
         if (challenges){
-          challenges.tabphotos=JSON.parse(challenges.tabphotos)
+          for (i=0,i<=challenges.length,i++){
+            var obj = JSON.parse('['+challenges[i].tabphotos+']')
+            challenges[i].tabphotos = obj
+          }
           deferred.resolve(challenges);
 
         }
