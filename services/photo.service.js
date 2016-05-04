@@ -65,6 +65,7 @@ function relate_user_photo(u,ph){
 
 function getAllPhotosChallenge(idChallenge){
   var deferred = Q.defer();
+  console.log(idChallenge)
   var query = "MATCH (ch:Challenge {id:{id}})-[r:HAS_PHOTO]->(p)"
             + " RETURN p"
 

@@ -72,7 +72,7 @@ function getAllPhotos(req,res){
 }
 
 function getAllPhotosChallenge(req,res){
-
+console.log(req.headers);
   photoService.getAllPhotosChallenge(req.headers.idChallenge)
   .then(function(result){
     res.status(200).send(result);
