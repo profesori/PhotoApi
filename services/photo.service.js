@@ -19,6 +19,7 @@ service.create = create;
 service.relate_user_photo = relate_user_photo;
 service.add_photo_challenge = add_photo_challenge;
 service.getAllPhotos=getAllPhotos;
+service.getAllPhotosChallenge=getAllPhotosChallenge;
 module.exports = service;
 
 function create(photoParam) {
@@ -61,6 +62,22 @@ function relate_user_photo(u,ph){
   });
   return deferred.promise;
 }
+
+function getAllPhotosChallenge(idChallenge){
+  var deferred = Q.defer();
+  var query = "MATCH (ch:Challenge {id:{id}})-[r:HAS_PHOTO]->(p)"
+            + " RETURN p"
+
+
+  db.query(query,{id:idChallenge},function(err,result){
+     if (err) deferred.reject(err);
+
+       deferred.resolve(result);
+  });
+
+  return deferred.promise;
+}
+
 function getAllPhotos(){
   var deferred = Q.defer();
   var query = "MATCH (p:Photo)"
