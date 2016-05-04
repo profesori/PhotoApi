@@ -50,7 +50,7 @@ function list_challenges() {
     var query = "MATCH (ch:Challenge) "
               + "OPTIONAL MATCH (ch)<-[r:PARTICIPATE]-(u) "
               + "OPTIONAL MATCH (p)<-[r2:HAS_PHOTO]-(ch) "
-              + "RETURN ch,p,u,r,r2"
+              + "RETURN COLLECT(ch) as challenges,p,u,r,r2"
     var opt = {
       varName:'ch',
       orderBy:'ch.start_date DESC'
