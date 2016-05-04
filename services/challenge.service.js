@@ -56,13 +56,7 @@ function list_challenges() {
           deferred.reject(err);
         }
         if (challenges){
-          for (var i=0;i<challenges.length;i++){
-            var photos = challenges[i].tabphotos;
-            console.log(photos);
-            var obj = '['+photos+']'
-              console.log(obj);
-            challenges[i].tabphotos =JSON.parse(JSON.stringify(obj));
-          }
+          
           deferred.resolve(challenges);
 
         }
