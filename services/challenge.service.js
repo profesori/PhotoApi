@@ -50,12 +50,12 @@ function list_challenges() {
     var query = "MATCH (ch:Challenge) "
               + "OPTIONAL MATCH (ch)<-[r:PARTICIPATE]-(u) "
               + "OPTIONAL MATCH (p)<-[r2:HAS_PHOTO]-(ch) "
-              + "RETURN u-[]->ch-[]->p,r,r2"
+              + ""
     var opt = {
       varName:'ch',
       orderBy:'ch.start_date DESC'
     }
-    db.query(query,opt,function (err,challenges){
+    challengeDb.query(query,opt,function (err,challenges){
         if (err){
           deferred.reject(err);
         }
