@@ -61,7 +61,7 @@ function list_challenges() {
             console.log(photos);
             var obj = '['+photos+']'
               console.log(obj);
-            challenges[i].tabphotos = JSON.parse(obj);
+            challenges[i].tabphotos = JSON.parse(obj[0]);
           }
           deferred.resolve(challenges);
 
