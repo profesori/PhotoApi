@@ -27,7 +27,8 @@ router.post(
              _photo=photo;
              userService.getById(req.user.sub)
              .then(function (_user){
-              photoService.relate_user_photo(_user.seraphId,photo.seraphId)
+
+              photoService.relate_user_photo(_user,photo)
               .then(function (pht) {
                   res.status(200).send(_photo);
                   console.console.log(_photo);
