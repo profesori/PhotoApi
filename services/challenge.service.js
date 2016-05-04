@@ -48,12 +48,12 @@ function list_challenges() {
     //challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
     //challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
     var query = "MATCH (ch:Challenge) "
-              + "OPTIONAL MATCH (ch)<-[r:PARTICIPATE]-(u) "
-              + "OPTIONAL MATCH (p)<-[r2:HAS_PHOTO]-(ch) "
-              + ""
     var opt = {
       varName:'ch',
       orderBy:'ch.start_date DESC'
+      include : [
+        usersDb,photosDb
+      ]
     }
     challengeDb.query(query,opt,function (err,challenges){
         if (err){
