@@ -57,12 +57,11 @@ function list_challenges() {
         }
         if (challenges){
           for (var i=0;i<=challenges.length;i++){
-            console.log(challenges[i]);
+            console.log(challenges[i].tabphotos);
             var obj = JSON.parse('['+challenges[i].tabphotos+']')
             challenges[i].tabphotos = obj
           }
-          console.log(challenges);
-          deferred.resolve(JSON.parse(challenges));
+          deferred.resolve(challenges);
 
         }
     });
