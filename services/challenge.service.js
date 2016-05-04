@@ -57,6 +57,7 @@ function list_challenges() {
           deferred.reject(err);
         }
         if (challenges){
+          challenges.tabphotos=JSON.parse(challenges.tabphotos)
           deferred.resolve(challenges);
 
         }
