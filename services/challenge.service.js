@@ -48,7 +48,8 @@ function list_challenges() {
     //challengeDb.compose(photosDb, 'tabphotos', 'HAS_PHOTO');
     //challengeDb.compose(usersDb,'tabusers','PARTICIPATE');
     var query = "MATCH (ch:Challenge) "
-              + "OPTIONAL MATCH (p)<-[r2:HAS_PHOTO]-(ch)<-[r:PARTICIPATE]-(u) "
+              + "OPTIONAL MATCH (ch)<-[r:PARTICIPATE]-(u) "
+              + "OPTIONAL MATCH (p)<-[r2:HAS_PHOTO]-(ch) "
               + "RETURN ch,p,u,r,r2"
     var opt = {
       varName:'ch',
