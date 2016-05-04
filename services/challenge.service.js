@@ -56,7 +56,7 @@ function list_challenges() {
           deferred.reject(err);
         }
         if (challenges){
-          for (var i=0;i<=challenges.length;i++){
+          for (var i=0;i<challenges.length;i++){
             console.log(challenges[i].tabphotos);
             var obj = JSON.parse('['+challenges[i].tabphotos+']')
             challenges[i].tabphotos = obj
