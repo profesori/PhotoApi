@@ -59,7 +59,7 @@ function list_challenges() {
           for (var i=0;i<challenges.length;i++){
             var photos = challenges[i].tabphotos;
             console.log(photos);
-            var obj = JSON.parse('['+photos+']')
+            var obj = '['+photos+']'
               console.log(obj);
             challenges[i].tabphotos = obj;
           }
