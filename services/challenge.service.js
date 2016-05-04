@@ -50,7 +50,7 @@ function list_challenges() {
     var query = "MATCH (ch:Challenge) "
     var opt = {
       varName:'ch',
-      orderBy:'ch.start_date DESC'
+      orderBy:'ch.start_date DESC',
       include : [
         usersDb,photosDb
       ]
