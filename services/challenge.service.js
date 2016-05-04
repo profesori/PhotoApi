@@ -57,6 +57,7 @@ function list_challenges() {
         }
         if (challenges){
           for (var i=0;i<=challenges.length;i++){
+            console.log(challenges[i]);
             var obj = JSON.parse('['+challenges[i].tabphotos+']')
             challenges[i].tabphotos = obj
           }
